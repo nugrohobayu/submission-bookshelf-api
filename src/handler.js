@@ -95,7 +95,7 @@ const getAllBooks = (request, h) => {
     }
   }
 
-  const booksToReturn = filteredBooks.length >= 2 ? filteredBooks.slice(0, 2) : [];
+  const booksToReturn =  filteredBooks.slice(0, 2);
 
   const response = h.response({
     status: 'success',
