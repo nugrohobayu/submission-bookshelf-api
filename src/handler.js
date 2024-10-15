@@ -1,7 +1,7 @@
 const { nanoid } = require('nanoid');
 const books = require('./books');
 
-const addBookHandler = (request, h) =>{
+const addBook = (request, h) =>{
   const {
     name,
     year,
@@ -16,18 +16,18 @@ const addBookHandler = (request, h) =>{
   const finished = pageCount === readPage ? true : false;
   const insertedAt = new Date().toISOString();
   const updatedAt = insertedAt;
-  if (!name) {
-    const response = h.response({
-      status: 'fail',
-      message: 'Gagal menambahkan buku. Mohon isi nama buku',
-    });
-    response.code(400);
-    return response;
-  }
   if (readPage > pageCount) {
     const response = h.response({
       status: 'fail',
       message: 'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount',
+    });
+    response.code(400);
+    return response;
+  }
+  if (!name) {
+    const response = h.response({
+      status: 'fail',
+      message: 'Gagal menambahkan buku. Mohon isi nama buku',
     });
     response.code(400);
     return response;
@@ -69,7 +69,7 @@ const addBookHandler = (request, h) =>{
   return response;
 };
 
-const getAllBooksHandler = (request, h) => {
+const getAllBooks = (request, h) => {
   const { name, reading, finished } = request.query;
   let filteredBooks = books;
 
@@ -95,13 +95,12 @@ const getAllBooksHandler = (request, h) => {
     }
   }
 
-  const booksToReturn =
-      filteredBooks.length >= 2 ? filteredBooks.slice(0, 2) : [];
+  const booksReturn = filteredBooks.length >= 2 ? filteredBooks.slice(0, 2) : [];
 
   const response = h.response({
     status: 'success',
     data: {
-      books: booksToReturn.map((book) => ({
+      books: booksReturn.map((book) => ({
         id: book.id,
         name: book.name,
         publisher: book.publisher,
@@ -113,7 +112,7 @@ const getAllBooksHandler = (request, h) => {
   return response;
 };
 
-const getBookByIdHandler = (request, h) => {
+const getBookById = (request, h) => {
   const { id } = request.params;
   const book = books.filter((book) => book.id === id)[0];
 
@@ -135,7 +134,7 @@ const getBookByIdHandler = (request, h) => {
   return response;
 };
 
-const editBookByIdHandler = (request, h) => {
+const editBookById = (request, h) => {
   const { id } = request.params;
 
   const {
@@ -202,7 +201,7 @@ const editBookByIdHandler = (request, h) => {
   return response;
 };
 
-const deleteBookByIdHandler = (request, h) => {
+const deleteBookById = (request, h) => {
   const { id } = request.params;
 
   const index = books.findIndex((book) => book.id === id);
@@ -223,4 +222,4 @@ const deleteBookByIdHandler = (request, h) => {
   return response;
 };
 
-module.exports = { addBookHandler, getAllBooksHandler, getBookByIdHandler, editBookByIdHandler, deleteBookByIdHandler };
+module.exports = { addBook, getAllBooks, getBookById, editBookById, deleteBookById };
