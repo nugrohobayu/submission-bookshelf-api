@@ -74,8 +74,8 @@ const getAllBooks = (request, h) => {
   let filteredBooks = books;
 
   if (name) {
-    const nameLowerCase = name.toLowerCase();
-    filteredBooks = filteredBooks.filter((book) => book.name.toLowerCase().includes(nameLowerCase)
+    const nameToLowerCase = name.toLowerCase();
+    filteredBooks = filteredBooks.filter((book) => book.name.toLowerCase().includes(nameToLowerCase)
     );
   }
 
@@ -95,12 +95,12 @@ const getAllBooks = (request, h) => {
     }
   }
 
-  const booksReturn = filteredBooks.length >= 2 ? filteredBooks.slice(0, 2) : [];
+  const booksToReturn = filteredBooks.length >= 2 ? filteredBooks.slice(0, 2) : [];
 
   const response = h.response({
     status: 'success',
     data: {
-      books: booksReturn.map((book) => ({
+      books: booksToReturn.map((book) => ({
         id: book.id,
         name: book.name,
         publisher: book.publisher,
